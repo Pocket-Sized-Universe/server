@@ -1,4 +1,4 @@
-# Mare Synchronos Docker Setup
+# Pocket Sized Universe Docker Setup
 This is primarily aimed at developers who want to spin up their own local server for development purposes without having to spin up a VM.
 Obligatory requires Docker to be installed on the machine.
 
@@ -22,8 +22,8 @@ It is enough to set them as User variables. The compose files refer to those env
 It is also possible to set those values in the configuration.json files themselves.  
 Without a valid Discord bot you will not be able to register accounts without fumbling around in the PostgreSQL database.
 
-## 3. Run Mare Server
-The run folder contains two major Mare configurations which is `standalone` and `sharded`.  
+## 3. Run Pocket Sized Universe Server
+The run folder contains two major Pocket Sized Universe configurations which is `standalone` and `sharded`.
 Both configurations default to port `6000` for the main server connection and `6200` for the files downloads. Sharded configuration additionally uses `6201` for downloads. No HTTPS.  
 All `appsettings.json` configurations provided are extensive at the point of writing, note the differences between the shard configurations and the main servers respectively.  
 They can be used as examples if you want to spin up your own servers otherwise.
@@ -31,9 +31,9 @@ They can be used as examples if you want to spin up your own servers otherwise.
 The scripts to start the respective services are divided by name, the `daemon-start/stop` files use `compose up -d` to run it in the background and to be able to stop the containers as well.  
 The respective docker-compose files lie in the `compose` folder. I would not recommend editing them unless you know what you are doing.  
 All data (postgresql and files uploads) will be thrown into the `data` folder after startup.  
-All logs from the mare services will be thrown into `logs`, divided by shard, where applicable.
+All logs from the Pocket Sized Universe services will be thrown into `logs`, divided by shard, where applicable.
 
-The `standalone` configuration features PostgeSQL, Mare Server, Mare StaticFilesServer and Mare Services.  
-The `sharded` configuration features PostgreSQL, Redis, HAProxy, Mare Server Main, 2 Mare Server Shards, Mare Services, Mare StaticFilesServer Main and 2 Mare StaticFilesServer Shards.  
+The `standalone` configuration features PostgeSQL, Pocket Sized Universe Server, Pocket Sized Universe StaticFilesServer and Pocket Sized Universe Services.
+The `sharded` configuration features PostgreSQL, Redis, HAProxy, Pocket Sized Universe Server Main, 2 Pocket Sized Universe Server Shards, Pocket Sized Universe Services, Pocket Sized Universe StaticFilesServer Main and 2 Pocket Sized Universe StaticFilesServer Shards.
 Haproxy is set up that it takes the same ports as the `standalone` configuration and distributes the connections between the shards.  
 In theory it should be possible to switch between the `standalone` and `sharded` configuration by shutting down one composition container and starting up the other. They share the same Database.
