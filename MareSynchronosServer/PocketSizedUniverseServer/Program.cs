@@ -20,28 +20,25 @@ public class Program
             var options = services.GetRequiredService<IConfigurationService<ServerConfiguration>>();
             var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
-            if (options.IsMain)
-            {
-                context.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
-                context.Database.Migrate();
-                context.Database.SetCommandTimeout(TimeSpan.FromSeconds(30));
-                context.SaveChanges();
+            context.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+            context.Database.Migrate();
+            context.Database.SetCommandTimeout(TimeSpan.FromSeconds(30));
+            context.SaveChanges();
 
-                // clean up residuals
-                var looseFiles = context.Files.Where(f => f.Uploaded == false);
-                var unfinishedRegistrations = context.LodeStoneAuth.Where(c => c.StartedAt != null);
-                context.RemoveRange(unfinishedRegistrations);
-                context.RemoveRange(looseFiles);
-                context.SaveChanges();
+            // clean up residuals
+            var looseFiles = context.Files.Where(f => f.Uploaded == false);
+            var unfinishedRegistrations = context.LodeStoneAuth.Where(c => c.StartedAt != null);
+            context.RemoveRange(unfinishedRegistrations);
+            context.RemoveRange(looseFiles);
+            context.SaveChanges();
 
-                logger.LogInformation(options.ToString());
-            }
+            logger.LogInformation(options.ToString());
             var metrics = services.GetRequiredService<MareMetrics>();
 
             metrics.SetGaugeTo(MetricsAPI.GaugeUsersRegistered, context.Users.AsNoTracking().Count());
             metrics.SetGaugeTo(MetricsAPI.GaugePairs, context.ClientPairs.AsNoTracking().Count());
-            metrics.SetGaugeTo(MetricsAPI.GaugePairsPaused, context.Permissions.AsNoTracking().Where(p=>p.IsPaused).Count());
-
+            metrics.SetGaugeTo(MetricsAPI.GaugePairsPaused,
+                context.Permissions.AsNoTracking().Count(p => p.IsPaused));
         }
 
         if (args.Length == 0 || !string.Equals(args[0], "dry", StringComparison.Ordinal))
