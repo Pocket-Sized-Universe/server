@@ -1,0 +1,41 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  packages: write
+  contents: read
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Log in to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      
+      - name: Set lowercase repository name
+        id: repo
+        run: |
+          echo "repository=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+      
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/${{ steps.repo.outputs.repository }}/server:sha-${{ github.sha }} -f Docker/build/Dockerfile-MareSynchronosServer .
+          docker build -t ghcr.io/${{ steps.repo.outputs.repository }}/auth:sha-${{ github.sha }} -f Docker/build/Dockerfile-MareSynchronosAuthService .
+          docker build -t ghcr.io/${{ steps.repo.outputs.repository }}/services:sha-${{ github.sha }} -f Docker/build/Dockerfile-MareSynchronosServices .
+      
+      - name: Tag and push Docker image
+        run: |
+          docker tag ghcr.io/${{ steps.repo.outputs.repository }}/server:sha-${{ github.sha }} ghcr.io/${{ steps.repo.outputs.repository }}/server:latest
+          docker tag ghcr.io/${{ steps.repo.outputs.repository }}/auth:sha-${{ github.sha }} ghcr.io/${{ steps.repo.outputs.repository }}/auth:latest
+          docker tag ghcr.io/${{ steps.repo.outputs.repository }}/services:sha-${{ github.sha }} ghcr.io/${{ steps.repo.outputs.repository }}/services:latest
+          docker push --all-tags ghcr.io/${{ steps.repo.outputs.repository }}/server
+          docker push --all-tags ghcr.io/${{ steps.repo.outputs.repository }}/auth
+          docker push --all-tags ghcr.io/${{ steps.repo.outputs.repository }}/services
