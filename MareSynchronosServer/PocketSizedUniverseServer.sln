@@ -9,13 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketSizedUniverseShared",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PocketSizedUniverseServices", "PocketSizedUniverseServices\PocketSizedUniverseServices.csproj", "{E29C8677-AB44-4950-9EB1-D8E70B710A56}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7D5C2B87-5CC9-4FE7-AD13-4C13F6600683}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		..\..\docker-compose.yml = ..\..\docker-compose.yml
-		..\..\config\server-local.json = ..\..\config\server-local.json
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketSizedUniverseAuthService", "PocketSizedUniverseAuthService\PocketSizedUniverseAuthService.csproj", "{D7D4041C-DCD9-4B7A-B423-0F458DFFF3D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketSizedUniverse.API", "..\MareAPI\PocketSizedUniverseAPI\PocketSizedUniverse.API.csproj", "{6AEBBDEA-98C4-4BB8-B186-5496F95A010A}"
