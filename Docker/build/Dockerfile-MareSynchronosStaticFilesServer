@@ -1,18 +1,18 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as BUILD
+FROM mcr.microsoft.com/dotnet/sdk:9.0 as BUILD
 
 COPY MareAPI /server/MareAPI
-COPY MareSynchronosServer/MareSynchronosShared /server/MareSynchronosServer/MareSynchronosShared
-COPY MareSynchronosServer/MareSynchronosStaticFilesServer /server/MareSynchronosServer/MareSynchronosStaticFilesServer
+COPY MareSynchronosServer/PocketSizedUniverseShared /server/MareSynchronosServer/PocketSizedUniverseShared
+COPY MareSynchronosServer/PocketSizedUniverseStaticFilesServer /server/MareSynchronosServer/PocketSizedUniverseStaticFilesServer
 
-WORKDIR /server/MareSynchronosServer/MareSynchronosStaticFilesServer/
+WORKDIR /server/MareSynchronosServer/PocketSizedUniverseStaticFilesServer/
 
 RUN dotnet publish \
         --configuration=Release \
         --os=linux \
         --output=/build \
-        MareSynchronosStaticFilesServer.csproj
+        PocketSizedUniverseStaticFilesServer.csproj
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 
 RUN adduser \
         --disabled-password \
@@ -22,11 +22,11 @@ RUN adduser \
         --system \
         mare
 
-COPY --from=BUILD /build /opt/MareSynchronosStaticFilesServer
-RUN chown -R mare:mare /opt/MareSynchronosStaticFilesServer
+COPY --from=BUILD /build /opt/PocketSizedUniverseStaticFilesServer
+RUN chown -R mare:mare /opt/PocketSizedUniverseStaticFilesServer
 RUN apt-get update; apt-get install curl -y
 
 USER mare:mare
-WORKDIR /opt/MareSynchronosStaticFilesServer
+WORKDIR /opt/PocketSizedUniverseStaticFilesServer
 
-CMD ["./MareSynchronosStaticFilesServer"]
+CMD ["./PocketSizedUniverseStaticFilesServer"]

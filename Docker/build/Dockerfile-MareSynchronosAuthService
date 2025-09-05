@@ -1,18 +1,18 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as BUILD
+FROM mcr.microsoft.com/dotnet/sdk:9.0 as BUILD
 
 COPY MareAPI /server/MareAPI
-COPY MareSynchronosServer/MareSynchronosShared /server/MareSynchronosServer/MareSynchronosShared
-COPY MareSynchronosServer/MareSynchronosAuthService /server/MareSynchronosServer/MareSynchronosAuthService
+COPY MareSynchronosServer/PocketSizedUniverseShared /server/MareSynchronosServer/PocketSizedUniverseShared
+COPY MareSynchronosServer/PocketSizedUniverseAuthService /server/MareSynchronosServer/PocketSizedUniverseAuthService
 
-WORKDIR /server/MareSynchronosServer/MareSynchronosAuthService/
+WORKDIR /server/MareSynchronosServer/PocketSizedUniverseAuthService/
 
 RUN dotnet publish \
         --configuration=Debug \
         --os=linux \
         --output=/build \
-        MareSynchronosAuthService.csproj
+        PocketSizedUniverseAuthService.csproj
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 
 RUN adduser \
         --disabled-password \
@@ -22,11 +22,11 @@ RUN adduser \
         --system \
         mare
 
-COPY --from=BUILD /build /opt/MareSynchronosAuthService
-RUN chown -R mare:mare /opt/MareSynchronosAuthService
+COPY --from=BUILD /build /opt/PocketSizedUniverseAuthService
+RUN chown -R mare:mare /opt/PocketSizedUniverseAuthService
 RUN apt-get update; apt-get install curl -y
 
 USER mare:mare
-WORKDIR /opt/MareSynchronosAuthService
+WORKDIR /opt/PocketSizedUniverseAuthService
 
-CMD ["./MareSynchronosAuthService"]
+CMD ["./PocketSizedUniverseAuthService"]
