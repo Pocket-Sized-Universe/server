@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 using System.Collections.Concurrent;
+using PocketSizedUniverse.API.Dto.Files;
 using PocketSizedUniverseServer.Services;
 using PocketSizedUniverseServer.Utils;
 
@@ -72,6 +73,22 @@ public partial class MareHub : Hub<IMareHub>, IMareHub
         }
 
         base.Dispose(disposing);
+    }
+
+    [Authorize(Policy = "Identified")]
+    public async Task<TorrentFileDto?> GetTorrentFileForHash(string hash)
+    {
+        _logger.LogCallInfo(MareHubLogger.Args(hash));
+        var torrentFile = await DbContext.CharaData.SelectMany(f => f.FileSwaps).FirstOrDefaultAsync(s => s.Hash == hash).ConfigureAwait(false);
+        if (torrentFile == null) return null;
+        return new TorrentFileDto()
+        {
+            Data = torrentFile.TorrentData,
+            Hash = torrentFile.Hash,
+            IsForbidden = torrentFile.IsForbidden,
+            Extension = torrentFile.FileExtension,
+            ForbiddenBy = torrentFile.ForbiddenBy,
+        };
     }
 
     [Authorize(Policy = "Identified")]

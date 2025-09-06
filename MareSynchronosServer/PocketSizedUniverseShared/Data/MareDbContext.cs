@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PocketSizedUniverse.API.Dto.CharaData;
 using PocketSizedUniverseShared.Models;
 
 namespace PocketSizedUniverseShared.Data;

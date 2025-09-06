@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using PocketSizedUniverse.API.Dto.CharaData;
 
 namespace PocketSizedUniverseShared.Models;
 
