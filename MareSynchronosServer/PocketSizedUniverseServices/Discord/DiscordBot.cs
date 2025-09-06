@@ -184,9 +184,9 @@ internal class DiscordBot : IHostedService
     private async Task GenerateOrUpdateWizardMessage(SocketTextChannel channel, IUserMessage? prevMessage)
     {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.WithTitle("Mare Services Bot Interaction Service");
+        eb.WithTitle("PSU Services Bot Interaction Service");
         eb.WithDescription("Press \"Start\" to interact with this bot!" + Environment.NewLine + Environment.NewLine
-            + "You can handle all of your Mare account needs in this server through the easy to use interactive bot prompt. Just follow the instructions!");
+            + "You can handle all of your PSU account needs in this server through the easy to use interactive bot prompt. Just follow the instructions!");
         eb.WithThumbnailUrl("https://raw.githubusercontent.com/PocketSizedUniverse/repo/main/PocketSizedUniverse/images/icon.png");
         var cb = new ComponentBuilder();
         cb.WithButton("Start", style: ButtonStyle.Primary, customId: "wizard-captcha:true", emote: Emoji.Parse("➡️"));
@@ -427,7 +427,7 @@ internal class DiscordBot : IHostedService
             var onlineUsers = await _connectionMultiplexer.GetServer(endPoint).KeysAsync(pattern: "UID:*").CountAsync().ConfigureAwait(false);
 
             _logger.LogInformation("Users online: " + onlineUsers);
-            await _discordClient.SetActivityAsync(new Game("Mare for " + onlineUsers + " Users")).ConfigureAwait(false);
+            await _discordClient.SetActivityAsync(new Game("The Universe for " + onlineUsers + " Users")).ConfigureAwait(false);
             await Task.Delay(TimeSpan.FromSeconds(10)).ConfigureAwait(false);
         }
     }

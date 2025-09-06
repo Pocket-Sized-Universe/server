@@ -23,7 +23,7 @@ public partial class MareWizardModule
         EmbedBuilder eb = new();
         eb.WithColor(Color.Blue);
         eb.WithTitle("Start Registration");
-        eb.WithDescription("Here you can start the registration process with the Mare Synchronos server of this Discord." + Environment.NewLine + Environment.NewLine
+        eb.WithDescription("Here you can start the registration process with the Pocket Sized Universe server of this Discord." + Environment.NewLine + Environment.NewLine
             + "- Have your Lodestone URL ready (i.e. https://eu.finalfantasyxiv.com/lodestone/character/XXXXXXXXX)" + Environment.NewLine
             + "  - The registration requires you to modify your Lodestone profile with a generated code for verification" + Environment.NewLine
             + "- Do not use this on mobile because you will need to be able to copy the generated secret key" + Environment.NewLine
@@ -103,8 +103,7 @@ public partial class MareWizardModule
         EmbedBuilder eb = new();
         ComponentBuilder cb = new();
         bool stillEnqueued = _botServices.VerificationQueue.Any(k => k.Key == Context.User.Id);
-        bool verificationRan = true;
-        bool verified = true;
+        bool verificationRan = _botServices.DiscordVerifiedUsers.TryGetValue(Context.User.Id, out bool verified);
         bool registerSuccess = false;
         if (!verificationRan)
         {
@@ -134,12 +133,8 @@ public partial class MareWizardModule
                 eb.WithTitle($"Registration successful, your UID: {uid}");
                 eb.WithDescription("This is your private secret key. Do not share this private secret key with anyone. **If you lose it, it is irrevocably lost.**"
                                              + Environment.NewLine + Environment.NewLine
-                                             + "**__NOTE: Secret keys are considered legacy. Using the suggested OAuth2 authentication in Mare, you do not need to use this Secret Key.__**"
-                                             + Environment.NewLine + Environment.NewLine
                                              + $"||**`{key}`**||"
                                              + Environment.NewLine + Environment.NewLine
-                                             + "If you want to continue using legacy authentication, enter this key in Mare Synchronos and hit save to connect to the service."
-                                             + Environment.NewLine
                                              + "__NOTE: The Secret Key only contains the letters ABCDEF and numbers 0 - 9.__"
                                              + Environment.NewLine
                                              + "You should connect as soon as possible to not get caught by the automatic cleanup process."
@@ -214,7 +209,7 @@ public partial class MareWizardModule
                               + Environment.NewLine + Environment.NewLine
                               + $"**! THIS IS NOT THE KEY YOU HAVE TO ENTER IN MARE !**"
                               + Environment.NewLine + Environment.NewLine
-                              + "Once added and saved, use the button below to Verify and finish registration and receive a secret key to use for Mare Synchronos."
+                              + "Once added and saved, use the button below to Verify and finish registration and receive a secret key to use for Pocket Sized Universe."
                               + Environment.NewLine
                               + "__You can delete the entry from your profile after verification.__"
                               + Environment.NewLine + Environment.NewLine
