@@ -20,11 +20,6 @@ public class StaticFilesServerConfiguration : MareConfigurationBase
     public string ColdStorageDirectory { get; set; } = null;
     public double ColdStorageSizeHardLimitInGiB { get; set; } = -1;
     public int ColdStorageUnusedFileRetentionPeriodInDays { get; set; } = 30;
-    [RemoteConfiguration]
-    public double SpeedTestHoursRateLimit { get; set; } = 0.5;
-    [RemoteConfiguration]
-    public Uri CdnFullUrl { get; set; } = null;
-    public ShardConfiguration? ShardConfiguration { get; set; } = null;
     public override string ToString()
     {
         StringBuilder sb = new();
