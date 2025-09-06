@@ -4,8 +4,6 @@ namespace PocketSizedUniverseShared.Utils.Configuration;
 
 public class ServerConfiguration : MareConfigurationBase
 {
-    public Uri CdnFullUrl { get; set; } = null;
-
     public Version ExpectedClientVersion { get; set; } = new Version(0, 0, 0);
 
     public int MaxExistingGroupsByUser { get; set; } = 3;
@@ -28,7 +26,6 @@ public class ServerConfiguration : MareConfigurationBase
     {
         StringBuilder sb = new();
         sb.AppendLine(base.ToString());
-        sb.AppendLine($"{nameof(CdnFullUrl)} => {CdnFullUrl}");
         sb.AppendLine($"{nameof(RedisConnectionString)} => {RedisConnectionString}");
         sb.AppendLine($"{nameof(ExpectedClientVersion)} => {ExpectedClientVersion}");
         sb.AppendLine($"{nameof(MaxExistingGroupsByUser)} => {MaxExistingGroupsByUser}");
