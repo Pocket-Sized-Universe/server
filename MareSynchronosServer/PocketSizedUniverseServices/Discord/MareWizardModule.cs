@@ -151,7 +151,7 @@ public partial class MareWizardModule : InteractionModuleBase
         bool isInAprilFoolsMode = _mareServicesConfiguration.GetValueOrDefault<ulong?>(nameof(ServicesConfiguration.DiscordRoleAprilFools2024), null) != null
             && DateTime.UtcNow.Month == 4 && DateTime.UtcNow.Day == 1 && DateTime.UtcNow.Year == 2024 && DateTime.UtcNow.Hour >= 10;
 #elif DEBUG
-        bool isInAprilFoolsMode = true;
+        bool isInAprilFoolsMode = false;
 #endif
 
         EmbedBuilder eb = new();
