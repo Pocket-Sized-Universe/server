@@ -91,7 +91,7 @@ public class CharaDataPose
 
 public class TorrentFileEntry
 {
-    public string Hash { get; set; }
+    public byte[] Hash { get; set; }
     public string GamePath { get; set; }
     public byte[] TorrentData { get; set; }
     public string FileExtension { get; set; }

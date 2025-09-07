@@ -76,7 +76,7 @@ public partial class MareHub : Hub<IMareHub>, IMareHub
     }
 
     [Authorize(Policy = "Identified")]
-    public async Task<TorrentFileDto?> GetTorrentFileForHash(string hash)
+    public async Task<TorrentFileDto?> GetTorrentFileForHash(byte[] hash)
     {
         _logger.LogCallInfo(MareHubLogger.Args(hash));
         var torrentFile = await DbContext.CharaData.SelectMany(f => f.FileSwaps).FirstOrDefaultAsync(s => s.Hash == hash).ConfigureAwait(false);
