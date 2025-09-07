@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 using System.Collections.Concurrent;
+using PocketSizedUniverse.API.Dto.CharaData;
 using PocketSizedUniverse.API.Dto.Files;
 using PocketSizedUniverseServer.Services;
 using PocketSizedUniverseServer.Utils;
+using TorrentFileEntry = PocketSizedUniverseShared.Models.TorrentFileEntry;
 
 namespace PocketSizedUniverseServer.Hubs;
 
@@ -79,7 +81,7 @@ public partial class MareHub : Hub<IMareHub>, IMareHub
     public async Task<TorrentFileDto?> GetTorrentFileForHash(byte[] hash)
     {
         _logger.LogCallInfo(MareHubLogger.Args(hash));
-        var torrentFile = await DbContext.CharaData.SelectMany(f => f.FileSwaps).FirstOrDefaultAsync(s => s.Hash == hash).ConfigureAwait(false);
+        var torrentFile = await DbContext.TorrentFileEntries.FirstOrDefaultAsync(s => s.Hash == hash).ConfigureAwait(false);
         if (torrentFile == null) return null;
         return new TorrentFileDto()
         {
@@ -89,6 +91,24 @@ public partial class MareHub : Hub<IMareHub>, IMareHub
             Extension = torrentFile.FileExtension,
             ForbiddenBy = torrentFile.ForbiddenBy,
         };
+    }
+
+    [Authorize(Policy = "Identified")]
+    public Task CreateNewTorrentFileEntry(TorrentFileDto torrentFileDto)
+    {
+        _logger.LogCallInfo();
+
+        var entry = new TorrentFileEntry()
+        {
+            FileExtension = torrentFileDto.Extension,
+            Hash = torrentFileDto.Hash,
+            TorrentData = torrentFileDto.Data,
+            IsForbidden = torrentFileDto.IsForbidden,
+            ForbiddenBy = torrentFileDto.ForbiddenBy,
+            GamePath = torrentFileDto.GamePath
+        };
+        DbContext.TorrentFileEntries.Add(entry);
+        return DbContext.SaveChangesAsync();
     }
 
     [Authorize(Policy = "Identified")]
