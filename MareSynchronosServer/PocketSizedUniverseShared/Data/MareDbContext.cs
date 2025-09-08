@@ -105,9 +105,11 @@ public class MareDbContext : DbContext
             .WithOne(c => c.Parent)
             .HasForeignKey(c => new { c.ParentId, c.ParentUploaderUID });
         mb.Entity<CharaData>()
-            .HasMany(p => p.FileRedirects);
+            .HasMany(p => p.FileRedirects)
+            .WithMany(f => f.CharaData);
         mb.Entity<CharaData>()
-            .HasMany(p => p.FileSwaps);
+            .HasMany(p => p.FileSwaps)
+            .WithMany(t => t.CharaData);
         mb.Entity<CharaData>()
             .HasMany(p => p.AllowedIndividiuals)
             .WithOne(p => p.Parent)
@@ -135,19 +137,16 @@ public class MareDbContext : DbContext
         mb.Entity<CharaDataAllowance>().HasIndex(c => c.ParentId);
         mb.Entity<CharaDataAllowance>().HasOne(u => u.AllowedGroup).WithMany().HasForeignKey(u => u.AllowedGroupGID).OnDelete(DeleteBehavior.Cascade);
         mb.Entity<CharaDataAllowance>().HasOne(u => u.AllowedUser).WithMany().HasForeignKey(u => u.AllowedUserUID).OnDelete(DeleteBehavior.Cascade);
+        
+        // Independent TorrentFileEntry table
         mb.Entity<PocketSizedUniverseShared.Models.TorrentFileEntry>().ToTable("torrent_file_entries");
-        mb.Entity<PocketSizedUniverseShared.Models.TorrentFileEntry>().HasKey(c => new { c.ParentId, c.ParentUploaderUID, c.GamePath });
-        mb.Entity<PocketSizedUniverseShared.Models.TorrentFileEntry>().HasIndex(c => c.ParentId);
-        mb.Entity<PocketSizedUniverseShared.Models.TorrentFileEntry>().HasOne(t => t.Parent)
-            .WithMany(c => c.FileSwaps)
-            .HasForeignKey(t => new { t.ParentId, t.ParentUploaderUID })
-            .OnDelete(DeleteBehavior.Cascade);
+        mb.Entity<PocketSizedUniverseShared.Models.TorrentFileEntry>().HasKey(t => t.Id);
+        mb.Entity<PocketSizedUniverseShared.Models.TorrentFileEntry>().Property(t => t.Id).ValueGeneratedOnAdd();
+        mb.Entity<PocketSizedUniverseShared.Models.TorrentFileEntry>().HasIndex(t => t.Hash);
+        
+        // Independent FileRedirectEntry table
         mb.Entity<PocketSizedUniverseShared.Models.FileRedirectEntry>().ToTable("file_redirect_entries");
-        mb.Entity<PocketSizedUniverseShared.Models.FileRedirectEntry>().HasKey(c => new { c.ParentId, c.ParentUploaderUID, c.GamePath });
-        mb.Entity<PocketSizedUniverseShared.Models.FileRedirectEntry>().HasIndex(c => c.ParentId);
-        mb.Entity<PocketSizedUniverseShared.Models.FileRedirectEntry>().HasOne(f => f.Parent)
-            .WithMany(c => c.FileRedirects)
-            .HasForeignKey(f => new { f.ParentId, f.ParentUploaderUID })
-            .OnDelete(DeleteBehavior.Cascade);
+        mb.Entity<PocketSizedUniverseShared.Models.FileRedirectEntry>().HasKey(f => f.Id);
+        mb.Entity<PocketSizedUniverseShared.Models.FileRedirectEntry>().Property(f => f.Id).ValueGeneratedOnAdd();
     }
 }

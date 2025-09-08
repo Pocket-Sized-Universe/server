@@ -32,8 +32,8 @@ public class CharaData
     public string? ManipulationData { get; set; }
     public int DownloadCount { get; set; } = 0;
     public virtual ICollection<CharaDataPose> Poses { get; set; } = [];
-    public virtual ICollection<PocketSizedUniverseShared.Models.FileRedirectEntry> FileRedirects { get; set; } = [];
-    public virtual ICollection<PocketSizedUniverseShared.Models.TorrentFileEntry> FileSwaps { get; set; } = [];
+    public virtual ICollection<FileRedirectEntry> FileRedirects { get; set; } = [];
+    public virtual ICollection<TorrentFileEntry> FileSwaps { get; set; } = [];
     public virtual ICollection<CharaDataAllowance> AllowedIndividiuals { get; set; } = [];
 }
 
@@ -91,22 +91,20 @@ public class CharaDataPose
 
 public class TorrentFileEntry
 {
-    public byte[] Hash { get; set; }
+    public long Id { get; set; }
     public string GamePath { get; set; }
+    public byte[] Hash { get; set; }
     public byte[] TorrentData { get; set; }
     public string FileExtension { get; set; }
     public bool IsForbidden { get; set; }
     public string ForbiddenBy { get; set; } = string.Empty;
-    public virtual CharaData Parent { get; set; }
-    public string ParentId { get; set; }
-    public string ParentUploaderUID { get; set; }
+    public virtual ICollection<CharaData> CharaData { get; set; } = [];
 }
 
 public class FileRedirectEntry
 {
-    public string SwapPath { get; set; }
+    public long Id { get; set; }
     public string GamePath { get; set; }
-    public virtual CharaData Parent { get; set; }
-    public string ParentId { get; set; }
-    public string ParentUploaderUID { get; set; }
+    public string SwapPath { get; set; }
+    public virtual ICollection<CharaData> CharaData { get; set; } = [];
 }
