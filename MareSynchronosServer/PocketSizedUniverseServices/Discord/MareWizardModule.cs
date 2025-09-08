@@ -163,9 +163,9 @@ public partial class MareWizardModule : InteractionModuleBase
             + (hasAccount ? string.Empty : ("- If you have changed your Discord account press \"🔗 Relink\"" + Environment.NewLine))
             + (!hasAccount ? string.Empty : ("- Create a secondary UIDs press \"2️⃣ Secondary UID\"" + Environment.NewLine))
             + (!hasAccount ? string.Empty : ("- Set a Vanity UID press \"💅 Vanity IDs\"" + Environment.NewLine))
+            + (!hasAccount ? string.Empty : ("- Manage your Super Seeder status \"🔃 Super Seeder\"" + Environment.NewLine))
             + (!hasAccount ? string.Empty : (!isInAprilFoolsMode ? string.Empty : ("- Check your WorryCoin™ and MareToken© balance and add payment options" + Environment.NewLine)))
-            + (!hasAccount ? string.Empty : ("- Delete your primary or secondary accounts with \"⚠️ Delete\""))
-            );
+            + (!hasAccount ? string.Empty : ("- Delete your primary or secondary accounts with \"⚠️ Delete\"")));
         eb.WithColor(Color.Blue);
         ComponentBuilder cb = new();
         if (!hasAccount)
@@ -179,6 +179,7 @@ public partial class MareWizardModule : InteractionModuleBase
             cb.WithButton("Recover", "wizard-recover", ButtonStyle.Secondary, new Emoji("🏥"));
             cb.WithButton("Secondary UID", "wizard-secondary", ButtonStyle.Secondary, new Emoji("2️⃣"));
             cb.WithButton("Vanity IDs", "wizard-vanity", ButtonStyle.Secondary, new Emoji("💅"));
+            cb.WithButton("Super Seeder", "wizard-seeder", ButtonStyle.Secondary, new Emoji("🔃"));
             if (isInAprilFoolsMode)
             {
                 cb.WithButton("WorryCoin™ and MareToken© management", "wizard-fools", ButtonStyle.Primary, new Emoji("💲"));

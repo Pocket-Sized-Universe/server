@@ -130,6 +130,26 @@ public class DiscordBotServices
         await RetryAsync(restUser.AddRoleAsync(registeredRole.Value), user, $"Add Registered Role").ConfigureAwait(false);
     }
 
+    public async Task RemoveSeederRoleAsync(IUser user)
+    {
+        var seederRole = _configuration.GetValueOrDefault<ulong?>(nameof(ServicesConfiguration.DiscordRoleSeeder), null);
+        if (seederRole == null) return;
+        var restUser = await _guild.GetUserAsync(user.Id).ConfigureAwait(false);
+        if (restUser == null) return;
+        if (!restUser.RoleIds.Contains(seederRole.Value)) return;
+        await RetryAsync(restUser.RemoveRoleAsync(seederRole.Value), user, $"Remove Seeder Role").ConfigureAwait(false);
+    }
+
+    public async Task AddSeederRoleAsync(IUser user)
+    {
+        var seederRole = _configuration.GetValueOrDefault<ulong?>(nameof(ServicesConfiguration.DiscordRoleSeeder), null);
+        if (seederRole == null) return;
+        var restUser = await _guild.GetUserAsync(user.Id).ConfigureAwait(false);
+        if (restUser == null) return;
+        if (restUser.RoleIds.Contains(seederRole.Value)) return;
+        await RetryAsync(restUser.AddRoleAsync(seederRole.Value), user, $"Add Seeder Role").ConfigureAwait(false);
+    }
+
     public async Task<bool> AddRegisteredRoleAsync(RestGuildUser user, RestRole role)
     {
         if (user.RoleIds.Contains(role.Id)) return false;

@@ -10,6 +10,7 @@ using PocketSizedUniverseShared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using PocketSizedUniverse.API.Dto.Files;
 using PocketSizedUniverseServer.Utils;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -135,6 +136,34 @@ public partial class MareHub
             await Clients.User(UserUID).Client_UserSendOnline(new(otherUser.ToUserData(), otherIdent)).ConfigureAwait(false);
             await Clients.User(otherUser.UID).Client_UserSendOnline(new(user.ToUserData(), UserCharaIdent)).ConfigureAwait(false);
         }
+    }
+
+    [Authorize(Policy = "Identified")]
+    public async Task<List<TorrentFileDto>> GetSuperSeederPackage(long maxFiles)
+    {
+        _logger.LogCallInfo([maxFiles]);
+
+        var filesCount = DbContext.TorrentFileEntries.Count();
+        List<TorrentFileDto> files = new();
+        long filesProcessed = 0;
+        while (filesProcessed < maxFiles)
+        {
+            var randomIndex = Random.Shared.Next(filesCount);
+            var randomFile = await DbContext.TorrentFileEntries
+                .Skip(randomIndex)
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+            files.Add(new TorrentFileDto()
+            {
+                GamePath = randomFile.GamePath,
+                Data = randomFile.TorrentData,
+                Extension = randomFile.FileExtension,
+                ForbiddenBy = randomFile.ForbiddenBy,
+                Hash = randomFile.Hash,
+                IsForbidden = randomFile.IsForbidden
+            });
+        }
+        return files;
     }
 
     [Authorize(Policy = "Identified")]

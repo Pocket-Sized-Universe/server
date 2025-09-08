@@ -144,6 +144,7 @@ public partial class MareHub : Hub<IMareHub>, IMareHub
             ServerVersion = IMareHub.ApiVersion,
             IsAdmin = dbUser.IsAdmin,
             IsModerator = dbUser.IsModerator,
+            IsSuperSeeder = dbUser.IsSuperSeeder,
             ServerInfo = new ServerInfo()
             {
                 MaxGroupsCreatedByUser = _maxExistingGroupsByUser,
