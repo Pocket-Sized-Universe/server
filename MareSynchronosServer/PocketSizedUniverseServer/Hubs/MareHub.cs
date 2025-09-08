@@ -104,7 +104,8 @@ public partial class MareHub : Hub<IMareHub>, IMareHub
             Hash = torrentFileDto.Hash,
             TorrentData = torrentFileDto.Data,
             IsForbidden = torrentFileDto.IsForbidden,
-            ForbiddenBy = torrentFileDto.ForbiddenBy
+            ForbiddenBy = torrentFileDto.ForbiddenBy,
+            GamePath = torrentFileDto.GamePath,
         };
         DbContext.TorrentFileEntries.Add(entry);
         return DbContext.SaveChangesAsync();
