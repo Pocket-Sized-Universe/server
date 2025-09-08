@@ -41,9 +41,12 @@ public partial class MareWizardModule
         ComponentBuilder cb = new();
         AddHome(cb);
         var label = isSeeder ? "Disable Super Seeder Mode" : "Enable Super Seeder Mode";
-        var buttonId = isSeeder ? "wizard-seeder-button:true" : "wizard-seeder-button:false";
+        // Send the desired new state in the button custom ID (toggle current state)
+        var buttonId = isSeeder ? "wizard-seeder-button:false" : "wizard-seeder-button:true";
         var emoji = isSeeder ? new Emoji("🌱") : new Emoji("⬆️");
         cb.WithButton(label, buttonId, ButtonStyle.Primary, emote: emoji);
+
+        await ModifyInteraction(eb, cb).ConfigureAwait(false);
     }
 
     [ComponentInteraction("wizard-seeder-button:*")]
@@ -65,5 +68,8 @@ public partial class MareWizardModule
         {
             await _botServices.RemoveSeederRoleAsync(Context.Interaction.User).ConfigureAwait(false);
         }
+
+        // Refresh the UI to reflect the new state by re-rendering the seeder component
+        await ComponentSeeder().ConfigureAwait(false);
     }
 }
