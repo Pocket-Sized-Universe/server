@@ -162,6 +162,7 @@ public partial class MareHub
                 Hash = randomFile.Hash,
                 IsForbidden = randomFile.IsForbidden
             });
+            filesProcessed++;
         }
         return files;
     }
