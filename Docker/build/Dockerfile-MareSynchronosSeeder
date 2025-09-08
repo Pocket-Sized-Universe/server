@@ -1,0 +1,36 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 as BUILD
+
+ENV FILE_PATH=/files
+ENV BASE_URL=https://universe.nostrathomas.net
+ENV POLLING_INTERVAL=15
+ENV BATCH_SIZE=10
+
+COPY MareAPI /seeder/MareAPI
+COPY MareSynchronosServer/PocketSizedUniverseSeeder /server/MareSynchronosServer/PocketSizedUniverseSeeder
+
+WORKDIR /server/MareSynchronosServer/PocketSizedUniverseSeeder/
+
+RUN dotnet publish \
+        --configuration=Debug \
+        --os=linux \
+        --output=/build \
+        PocketSizedUniverseSeeder.csproj
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+
+RUN adduser \
+        --disabled-password \
+        --group \
+        --no-create-home \
+        --quiet \
+        --system \
+        mare
+
+COPY --from=BUILD /build /opt/PocketSizedUniverseSeeder
+RUN chown -R mare:mare /opt/PocketSizedUniverseSeeder
+RUN apt-get update; apt-get install curl -y
+
+USER mare:mare
+WORKDIR /opt/PocketSizedUniverseSeeder
+
+CMD ["./PocketSizedUniverseSeeder"]

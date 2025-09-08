@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketSizedUniverseAuthServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketSizedUniverse.API", "..\MareAPI\PocketSizedUniverseAPI\PocketSizedUniverse.API.csproj", "{6AEBBDEA-98C4-4BB8-B186-5496F95A010A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketSizedUniverseSeeder", "PocketSizedUniverseSeeder\PocketSizedUniverseSeeder.csproj", "{99AD1522-315E-4C90-9034-125B87840032}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{6AEBBDEA-98C4-4BB8-B186-5496F95A010A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AEBBDEA-98C4-4BB8-B186-5496F95A010A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AEBBDEA-98C4-4BB8-B186-5496F95A010A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99AD1522-315E-4C90-9034-125B87840032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99AD1522-315E-4C90-9034-125B87840032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99AD1522-315E-4C90-9034-125B87840032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99AD1522-315E-4C90-9034-125B87840032}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

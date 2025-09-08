@@ -32,12 +32,15 @@ jobs:
           docker build -t ghcr.io/${{ steps.repo.outputs.repository }}/server:sha-${{ github.sha }} -f Docker/build/Dockerfile-MareSynchronosServer .
           docker build -t ghcr.io/${{ steps.repo.outputs.repository }}/auth:sha-${{ github.sha }} -f Docker/build/Dockerfile-MareSynchronosAuthService .
           docker build -t ghcr.io/${{ steps.repo.outputs.repository }}/services:sha-${{ github.sha }} -f Docker/build/Dockerfile-MareSynchronosServices .
+          docker build -t ghcr.io/${{ steps.repo.outputs.repository }}/seeder:sha-${{ github.sha }} -f Docker/build/Dockerfile-MareSynchronosSeeder .
       
       - name: Tag and push Docker image
         run: |
           docker tag ghcr.io/${{ steps.repo.outputs.repository }}/server:sha-${{ github.sha }} ghcr.io/${{ steps.repo.outputs.repository }}/server:latest
           docker tag ghcr.io/${{ steps.repo.outputs.repository }}/auth:sha-${{ github.sha }} ghcr.io/${{ steps.repo.outputs.repository }}/auth:latest
           docker tag ghcr.io/${{ steps.repo.outputs.repository }}/services:sha-${{ github.sha }} ghcr.io/${{ steps.repo.outputs.repository }}/services:latest
+          docker tag ghcr.io/${{ steps.repo.outputs.repository }}/seeder:sha-${{ github.sha }} ghcr.io/${{ steps.repo.outputs.repository }}/seeder:latest
           docker push --all-tags ghcr.io/${{ steps.repo.outputs.repository }}/server
           docker push --all-tags ghcr.io/${{ steps.repo.outputs.repository }}/auth
           docker push --all-tags ghcr.io/${{ steps.repo.outputs.repository }}/services
+          docker push --all-tags ghcr.io/${{ steps.repo.outputs.repository }}/seeder
